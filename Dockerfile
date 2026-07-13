@@ -3,6 +3,9 @@ FROM dunglas/frankenphp:latest
 # Installation des extensions nécessaires pour Symfony
 RUN install-php-extensions intl opcache zip
 
+# 📦 LIGNE CORRIGÉE : On récupère l'outil Composer officiel
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
 # Copie de ton projet dans le serveur
 COPY . /app
 
