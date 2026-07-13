@@ -36,5 +36,5 @@ RUN chown -R www-data:www-data /var/www/html
 # Port standard écouté par Apache
 EXPOSE 80
 
-# ÉTAPE AJOUTÉE : Exécute les migrations automatiquement au démarrage du conteneur
-CMD php bin/console doctrine:migrations:migrate --no-interaction && apache2-foreground
+# SOLUTION SANS ENTRPOINT : Commande native directe pour exécuter les tâches Symfony et lancer Apache
+CMD ["sh", "-c", "php bin/console cache:clear --no-interaction && php bin/console doctrine:migrations:migrate --no-interaction && apache2-foreground"]
