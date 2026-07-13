@@ -2,23 +2,43 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
-
+        <title>{% block title %}Farouck - Portfolio{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://w3.org viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>💻</text></svg>">
+        {% block stylesheets %}{% endblock %}
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
-
-        {% set frankenphpHotReload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
-        {% if frankenphpHotReload %}
-        <meta name="frankenphp-hot-reload:url" content="{{ frankenphpHotReload }}">
-        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
-        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
-        {% endif %}
     </head>
-    <body>
-        {% block body %}{% endblock %}
+    
+    {# Application de ton image abstraite en fond fixe #}
+    <body class="bg-slate-950 bg-cover bg-center bg-no-repeat bg-fixed text-slate-100 font-sans" style="background-image: url('{{ asset('images/fond.jpg') }}');">
+        
+        {# Barre de Navigation en transparence floutée (Glassmorphism) #}
+        <nav class="bg-slate-900/60 backdrop-blur-lg border-b border-white/10 text-white shadow-lg sticky top-0 z-50">
+            <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <a href="{{ path('app_home') }}" class="text-xl font-bold tracking-wider hover:text-indigo-400 transition">PORTFOLIO</a>
+                
+                <div class="space-x-4 md:space-x-6 font-medium text-sm sm:text-base flex items-center">
+                    <a href="{{ path('app_home') }}" class="hover:text-indigo-300 transition">Mon CV</a>
+                    <a href="{{ path('app_contact') }}" class="hover:text-indigo-300 transition">Prendre RDV</a>
+                    <a href="{{ path('app_wish') }}" class="hover:text-indigo-300 transition">Envoyer des Vœux</a>
+                    
+                    {% if app.user %}
+                        <a href="{{ path('app_logout') }}" class="bg-red-600/80 hover:bg-red-700 backdrop-blur-sm text-white font-semibold px-3 py-1.5 rounded-lg transition text-xs md:text-sm">
+                            Se déconnecter
+                        </a>
+                    {% else %}
+                        <a href="{{ path('app_login') }}" class="text-indigo-300 hover:text-white transition text-xs md:text-sm border border-indigo-500/30 bg-indigo-500/10 px-3 py-1.5 rounded-lg backdrop-blur-sm">
+                            Connexion
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+
+        {# Contenu dynamique des pages #}
+        <main class="min-h-[85vh]">
+            {% block body %}{% endblock %}
+        </main>
     </body>
 </html>

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+<div class="py-12 px-4 md:px-6">
+    <div class="max-w-xl mx-auto bg-slate-900/60 backdrop-blur-xl border border-white/10 shadow-2xl rounded-2xl p-8 md:p-12">
+        
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-extrabold text-white">Espace Sécurisé</h1>
+            <p class="text-slate-400 mt-2">Connectez-vous pour accéder au distributeur de vœux.</p>
+        </div>
+
+        <form method="post" class="space-y-6">
+            {% if error %}
+                <div class="mb-6 p-4 bg-red-500/10 border border-red-500/30 text-red-400 rounded-lg text-sm font-medium backdrop-blur-sm">
+                    Identifiants incorrects. Veuillez réessayer.
+                </div>
+            {% endif %}
+
+            <div>
+                <label for="username" class="block text-sm font-semibold text-slate-300">Adresse E-mail</label>
+                <input type="email" value="{{ last_username }}" name="_username" id="username" required autofocus class="mt-1 block w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-semibold text-slate-300">Mot de passe</label>
+                <input type="password" name="_password" id="password" required class="mt-1 block w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition duration-200 cursor-pointer text-center">
+                Se connecter
+            </button>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

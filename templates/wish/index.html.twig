@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Envoyer des Vœux via WhatsApp{% endblock %}
+
+{% block body %}
+<div class="py-12 px-4 md:px-6">
+    <div class="max-w-4xl mx-auto bg-slate-900/60 backdrop-blur-xl border border-white/10 shadow-2xl rounded-2xl p-8 md:p-12">
+        
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-extrabold text-white">🎉 Distributeur de Vœux WhatsApp</h1>
+            <p class="text-slate-400 mt-2">Sélectionnez une thématique, saisissez les coordonnées de votre ami(e) et envoyez la carte.</p>
+        </div>
+
+        <form onsubmit="event.preventDefault(); partagerVoeux();" class="space-y-8">
+            <div>
+                <label class="block text-sm font-bold text-slate-300 mb-3">1. Choisissez l'occasion :</label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="border-2 border-white/10 rounded-xl p-4 flex items-center space-x-4 cursor-pointer hover:border-indigo-500 transition bg-slate-900/40 text-white">
+                        <input type="radio" name="card_type" value="anniversaire" checked class="w-4 h-4 text-indigo-600">
+                        <span>🎂 Joyeux Anniversaire</span>
+                    </label>
+                    <label class="border-2 border-white/10 rounded-xl p-4 flex items-center space-x-4 cursor-pointer hover:border-indigo-500 transition bg-slate-900/40 text-white">
+                        <input type="radio" name="card_type" value="fetes" class="w-4 h-4 text-indigo-600">
+                        <span>🎄 Bonnes Fêtes</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="receiver_name" class="block text-sm font-semibold text-slate-300">Nom de votre ami(e)</label>
+                    <input type="text" id="receiver_name" required class="mt-1 block w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                </div>
+
+                <div>
+                    <label for="receiver_phone" class="block text-sm font-semibold text-slate-300">Numéro WhatsApp (ex: 22952838253)</label>
+                    <input type="tel" id="receiver_phone" required placeholder="Ex: 22952838253" class="mt-1 block w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                </div>
+            </div>
+
+            <div>
+                <label for="wishes" class="block text-sm font-semibold text-slate-300">Votre message personnalisé</label>
+                <textarea id="wishes" rows="4" required placeholder="Écrivez ici vos meilleurs souhaits..." class="mt-1 block w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"></textarea>
+            </div>
+
+            <button type="submit" 
+                    style="background-color: #25D366 !important; color: white !important;" 
+                    class="w-full font-bold py-4 px-6 rounded-lg shadow-[0_0_15px_rgba(37,211,102,0.3)] transition duration-300 transform hover:scale-[1.02] cursor-pointer">
+                🎁 Partager la carte sur WhatsApp
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+function partagerVoeux() {
+    var cardType = document.querySelector('input[name="card_type"]:checked').value;
+    var receiverName = document.getElementById('receiver_name').value;
+    var receiverPhone = document.getElementById('receiver_phone').value;
+    var wishes = document.getElementById('wishes').value;
+    
+    // Nettoyage du numéro
+    var numNettoye = receiverPhone.replace(/\D/g, '');
+    
+    // ⚠️ CONFIGURATION : Changez "http://127.0.0.1:8000" par votre future URL en ligne
+    var baseUrl = "http://127.0.0.1:8000"; 
+    
+    var lienCarte = baseUrl + "/carte?" + 
+                    "type=" + encodeURIComponent(cardType) + 
+                    "&name=" + encodeURIComponent(receiverName) + 
+                    "&msg=" + encodeURIComponent(wishes);
+    
+    var texteWhatsApp = "✨ Coucou " + receiverName + " ! Farouck t'a envoyé une magnifique carte de vœux surprise sur son portfolio ! 🎉\n\n" +
+                        "Clique vite ici pour la découvrir en grand :\n" + lienCarte;
+                    
+    var url = "https://wa.me/" + numNettoye + "?text=" + encodeURIComponent(texteWhatsApp);
+    
+    window.open(url, '_blank');
+}
+</script>
+{% endblock %}
