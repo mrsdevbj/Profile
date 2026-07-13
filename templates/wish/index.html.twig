@@ -59,21 +59,23 @@ function partagerVoeux() {
     var receiverPhone = document.getElementById('receiver_phone').value;
     var wishes = document.getElementById('wishes').value;
     
-    // Nettoyage du numéro
+    // Nettoyage complet du numéro
     var numNettoye = receiverPhone.replace(/\D/g, '');
     
-    // ⚠️ CONFIGURATION : Changez "http://127.0.0.1:8000" par votre future URL en ligne
-    var baseUrl = "http://127.0.0.1:8000"; 
+    // Titres en texte brut pour éviter les bugs de losanges
+    var titre = (cardType === 'anniversaire') ? '*** JOYEUX ANNIVERSAIRE ***' : '*** JOYEUSES FÊTES ***';
     
-        var lienCarte = "https://onrender.com?" + 
+    // 🌐 CRÉATION DU LIEN DE TA CARTE UNIQUE SUR TON SITE RENDER :
+    var lienCarte = "https://onrender.com?" + 
                     "type=" + encodeURIComponent(cardType) + 
                     "&name=" + encodeURIComponent(receiverName) + 
                     "&msg=" + encodeURIComponent(wishes);
-
-    var texteWhatsApp = "✨ Coucou " + receiverName + " ! Farouck t'a envoyé une magnifique carte de vœux surprise sur son portfolio ! 🎉\n\n" +
+    
+    // Message d'accompagnement envoyé sur WhatsApp
+    var texteWhatsApp = "✨ Coucou " + receiverName + " ! Je t'ai envoyé une magnifique carte de vœux surprise sur mon portfolio ! 🎉\n\n" +
                         "Clique vite ici pour la découvrir en grand :\n" + lienCarte;
                     
-    var url = "https://wa.me/" + numNettoye + "?text=" + encodeURIComponent(texteWhatsApp);
+    var url = "https://whatsapp.com" + numNettoye + "&text=" + encodeURIComponent(texteWhatsApp);
     
     window.open(url, '_blank');
 }
