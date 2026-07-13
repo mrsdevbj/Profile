@@ -9,6 +9,7 @@
         "ext-iconv": "*",
         "doctrine/dbal": "^3.0 || ^4.0",
         "doctrine/doctrine-bundle": "^2.13",
+        "doctrine/doctrine-migrations-bundle": "*",
         "doctrine/orm": "^3.3",
         "symfony/console": "7.1.*",
         "symfony/dotenv": "7.1.*",
@@ -17,8 +18,10 @@
         "symfony/mailer": "7.1.*",
         "symfony/messenger": "7.1.*",
         "symfony/runtime": "7.1.*",
+        "symfony/security-csrf": "7.1.*",
         "symfony/twig-bundle": "7.1.*",
-        "symfony/yaml": "7.1.*"
+        "symfony/yaml": "7.1.*",
+        "symfonycasts/tailwind-bundle": "*"
     },
     "config": {
         "allow-plugins": {
