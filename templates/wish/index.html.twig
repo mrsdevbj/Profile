@@ -65,11 +65,11 @@ function partagerVoeux() {
     // ⚠️ CONFIGURATION : Changez "http://127.0.0.1:8000" par votre future URL en ligne
     var baseUrl = "http://127.0.0.1:8000"; 
     
-    var lienCarte = baseUrl + "/carte?" + 
+        var lienCarte = "https://onrender.com?" + 
                     "type=" + encodeURIComponent(cardType) + 
                     "&name=" + encodeURIComponent(receiverName) + 
                     "&msg=" + encodeURIComponent(wishes);
-    
+
     var texteWhatsApp = "✨ Coucou " + receiverName + " ! Farouck t'a envoyé une magnifique carte de vœux surprise sur son portfolio ! 🎉\n\n" +
                         "Clique vite ici pour la découvrir en grand :\n" + lienCarte;
                     
