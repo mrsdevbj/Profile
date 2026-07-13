@@ -34,8 +34,8 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts
 # Attribution des droits à l'utilisateur Apache
 RUN chown -R www-data:www-data /var/www/html
 
-# Port exigé par Railway (il lira dynamiquement la variable PORT interne)
+# Remplacer la ligne EXPOSE par celle-ci (Railway gère le port via la variable PORT)
 EXPOSE 80
 
-# Commande native sécurisée (si la migration échoue, Apache démarre quand même au lieu de crasher)
-CMD ["sh", "-c", "php bin/console cache:clear --no-interaction; php bin/console doctrine:migrations:migrate --no-interaction; apache2-foreground"]
+# Commande modifiée pour forcer Apache à utiliser le port injecté par Railway
+CMD ["sh", "-c", "sed -i 's/Listen 80/Listen '${PORT}'/g' /etc/apache2/ports.conf && sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:'${PORT}'>/g' /etc/apache2/sites-available/*.conf && php bin/console cache:clear --no-interaction; php bin/console doctrine:migrations:migrate --no-interaction; apache2-foreground"]
