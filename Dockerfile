@@ -1,12 +1,13 @@
 FROM php:8.2-apache
 
-# Installation des extensions PHP nécessaires pour Symfony
+# Installation des dépendances et de l'extension pdo_pgsql pour Aiven PostgreSQL
 RUN apt-get update && apt-get install -y \
     libicu-dev \
     libzip-dev \
+    libpq-dev \
     zip \
     && docker-php-ext-configure intl \
-    && docker-php-ext-install intl opcache zip \
+    && docker-php-ext-install intl opcache zip pdo_pgsql \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Activation du module Apache rewrite
@@ -33,8 +34,8 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts
 # Attribution des droits à l'utilisateur Apache
 RUN chown -R www-data:www-data /var/www/html
 
-# Port standard écouté par Apache
+# Port exigé par Railway (il lira dynamiquement la variable PORT interne)
 EXPOSE 80
 
-# SOLUTION SANS ENTRPOINT : Commande native directe pour exécuter les tâches Symfony et lancer Apache
-CMD ["sh", "-c", "php bin/console cache:clear --no-interaction && php bin/console doctrine:migrations:migrate --no-interaction && apache2-foreground"]
+# Commande native sécurisée (si la migration échoue, Apache démarre quand même au lieu de crasher)
+CMD ["sh", "-c", "php bin/console cache:clear --no-interaction; php bin/console doctrine:migrations:migrate --no-interaction; apache2-foreground"]
