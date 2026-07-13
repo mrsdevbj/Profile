@@ -12,7 +12,4 @@ COPY . /app
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer install --no-dev --optimize-autoloader
 
-# ÉTAPE CORRIGÉE : Utilise l'option --no-interaction pour éviter les blocages
-RUN php bin/console tailwind:build --no-interaction
-
 ENV FRANKENPHP_CONFIG="document_root ./public"
