@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install intl opcache zip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Activation du module Apache rewrite (indispensable pour Symfony)
+# Activation du module Apache rewrite
 RUN a2enmod rewrite
 
 # Configuration du dossier public de Symfony comme racine d'Apache
@@ -35,3 +35,6 @@ RUN chown -R www-data:www-data /var/www/html
 
 # Port standard écouté par Apache
 EXPOSE 80
+
+# ÉTAPE AJOUTÉE : Exécute les migrations automatiquement au démarrage du conteneur
+CMD php bin/console doctrine:migrations:migrate --no-interaction && apache2-foreground
